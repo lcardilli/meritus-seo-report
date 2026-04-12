@@ -314,6 +314,125 @@
     .hero-stats { flex-direction: column; }
     .nav-links { display: none; }
   }
+
+  /* ── GAUGE ── */
+  .gauge-svg { display: block; margin: 2px auto 6px; overflow: visible; }
+  .gauge-track { fill: none; stroke: rgba(255,255,255,0.1); stroke-width: 6; stroke-linecap: round; }
+  .gauge-fill  { fill: none; stroke: var(--green); stroke-width: 6; stroke-linecap: round; }
+  .gauge-num   { font-family: 'DM Serif Display', serif; font-size: 21px; fill: #fff; }
+  .gauge-denom { font-size: 9px; fill: rgba(255,255,255,0.45); }
+
+  /* ── STATUS DOTS ── */
+  .dot-red { background: #ef4444; }
+
+  /* ── AUDIT SUMMARY COUNTS ── */
+  .audit-summary { display: flex; gap: 14px; margin: 6px 0 10px; flex-wrap: wrap; }
+  .audit-summary span { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; color: var(--muted); }
+
+  /* ── ACTIVE NAV ── */
+  .nav-links a.active { color: #fff; background: rgba(255,255,255,0.1); }
+  .mobile-nav a.active { color: #fff; }
+
+  /* ── HAMBURGER ── */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    margin-left: 8px;
+  }
+  .hamburger span {
+    display: block;
+    width: 22px; height: 2px;
+    background: rgba(255,255,255,0.7);
+    border-radius: 2px;
+    transition: all .2s;
+  }
+  .mobile-nav {
+    display: none;
+    flex-direction: column;
+    background: var(--navy-light);
+    position: fixed;
+    top: 64px; left: 0; right: 0;
+    z-index: 98;
+    padding: 8px 24px 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+  .mobile-nav.open { display: flex; }
+  .mobile-nav a {
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    font-size: 14px;
+    padding: 11px 4px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    transition: color .15s;
+  }
+  .mobile-nav a:last-child { border-bottom: none; }
+  .mobile-nav a:hover { color: #fff; }
+
+  /* ── PRINT BUTTON ── */
+  .btn-print {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.07);
+    color: rgba(255,255,255,0.65);
+    border: 1px solid rgba(255,255,255,0.14);
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 11.5px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.03em;
+    transition: all .2s;
+    white-space: nowrap;
+  }
+  .btn-print:hover { background: rgba(255,255,255,0.13); color: #fff; }
+
+  /* ── IMPLEMENTATION PROGRESS ── */
+  .impl-progress {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 20px;
+    background: #f0fdf6;
+    border: 1px solid rgba(0,168,94,0.22);
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  .impl-progress-bar { flex: 1; height: 5px; background: rgba(0,0,0,0.08); border-radius: 99px; overflow: hidden; }
+  .impl-progress-fill { height: 100%; background: var(--green-dark); border-radius: 99px; transition: width 1s ease; }
+  .impl-progress-label { font-size: 12px; font-weight: 600; color: var(--green-dark); white-space: nowrap; }
+
+  /* ── KEYWORD TABLE EXTRAS ── */
+  .kw-vol        { font-size: 12px; color: var(--muted); }
+  .kw-trend      { font-size: 12.5px; font-weight: 600; white-space: nowrap; }
+  .kw-trend-up   { color: var(--green-dark); }
+  .kw-trend-down { color: #ef4444; }
+  .kw-trend-flat { color: var(--muted); }
+  .kw-target     { font-size: 12px; color: var(--muted); font-style: italic; white-space: nowrap; }
+
+  /* ── CONTRAST FIXES ── */
+  .faq-a    { color: #4b5563; }
+  .gloss-def { color: #4b5563; }
+
+  /* ── PRINT ── */
+  @media print {
+    nav, .btn-print, .hamburger, .mobile-nav { display: none !important; }
+    body { background: #fff; }
+    .hero, footer { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    section { page-break-inside: avoid; }
+    a { text-decoration: none; color: inherit; }
+  }
+  @media (max-width: 700px) {
+    .hamburger { display: flex; }
+    .btn-print { display: none; }
+    .kw-vol, .kw-trend, .kw-target { display: none; }
+  }
 </style>
 </head>
 <body>
@@ -330,7 +449,21 @@
     <a href="#faq">FAQ</a>
     <a href="#glossary">Glossary</a>
   </div>
+  <button class="btn-print" id="btn-print">Print / PDF</button>
+  <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+<div class="mobile-nav" id="mobile-nav" aria-hidden="true">
+  <a href="#stats">Stats</a>
+  <a href="#traditional">Traditional SEO</a>
+  <a href="#technical">Technical</a>
+  <a href="#content">Content</a>
+  <a href="#onpage">On-Page</a>
+  <a href="#priority">Priorities</a>
+  <a href="#faq">FAQ</a>
+  <a href="#glossary">Glossary</a>
+</div>
 
 <div class="hero">
   <div class="hero-inner">
@@ -339,15 +472,32 @@
     <div class="hero-sub">Prepared by The Influence Agency &nbsp;·&nbsp; January 2026 Data &nbsp;·&nbsp; Source: SEMRush, PageSpeed Insights, GA4, Google Search Console</div>
     <div class="hero-stats">
       <div class="hero-stat">
-        <div class="hero-stat-val">65<span>/100</span></div>
+        <!-- 65/100 · arc r=43, length≈135.1 · fill=87.8 (65%) -->
+        <svg viewBox="0 0 100 58" width="100" height="58" class="gauge-svg">
+          <path d="M7,52 A43,43 0 0,0 93,52" class="gauge-track"/>
+          <path d="M7,52 A43,43 0 0,0 93,52" class="gauge-fill" stroke-dasharray="87.8 47.3"/>
+          <text x="50" y="40" text-anchor="middle" class="gauge-num">65</text>
+          <text x="50" y="51" text-anchor="middle" class="gauge-denom">/100</text>
+        </svg>
         <div class="hero-stat-label">Mobile Speed</div>
       </div>
       <div class="hero-stat">
-        <div class="hero-stat-val">65<span>/100</span></div>
+        <svg viewBox="0 0 100 58" width="100" height="58" class="gauge-svg">
+          <path d="M7,52 A43,43 0 0,0 93,52" class="gauge-track"/>
+          <path d="M7,52 A43,43 0 0,0 93,52" class="gauge-fill" stroke-dasharray="87.8 47.3"/>
+          <text x="50" y="40" text-anchor="middle" class="gauge-num">65</text>
+          <text x="50" y="51" text-anchor="middle" class="gauge-denom">/100</text>
+        </svg>
         <div class="hero-stat-label">Desktop Speed</div>
       </div>
       <div class="hero-stat">
-        <div class="hero-stat-val">19</div>
+        <!-- 19/100 · fill=25.7 (19%) -->
+        <svg viewBox="0 0 100 58" width="100" height="58" class="gauge-svg">
+          <path d="M7,52 A43,43 0 0,0 93,52" class="gauge-track"/>
+          <path d="M7,52 A43,43 0 0,0 93,52" class="gauge-fill" stroke-dasharray="25.7 109.4"/>
+          <text x="50" y="40" text-anchor="middle" class="gauge-num">19</text>
+          <text x="50" y="51" text-anchor="middle" class="gauge-denom">/100</text>
+        </svg>
         <div class="hero-stat-label">Authority Score</div>
       </div>
     </div>
@@ -385,22 +535,55 @@
       <thead>
         <tr>
           <th>Keyword</th>
+          <th>Vol/mo</th>
           <th>Position</th>
+          <th>Trend</th>
+          <th>Target</th>
         </tr>
       </thead>
       <tbody>
-        <tr><td>factoring for manufacturing companies</td><td><span class="kw-pos good">12</span></td></tr>
-        <tr><td>retail factoring</td><td><span class="kw-pos">16</span></td></tr>
-        <tr><td>it payroll financing</td><td><span class="kw-pos">17</span></td></tr>
-        <tr><td>factoring vs line of credit</td><td><span class="kw-pos">21</span></td></tr>
-        <tr><td>factoring freight invoices</td><td><span class="kw-pos">42</span></td></tr>
+        <tr>
+          <td>factoring for manufacturing companies</td>
+          <td class="kw-vol">590</td>
+          <td><span class="kw-pos good">12</span></td>
+          <td class="kw-trend kw-trend-up">↑ 3</td>
+          <td class="kw-target">Top 5</td>
+        </tr>
+        <tr>
+          <td>retail factoring</td>
+          <td class="kw-vol">720</td>
+          <td><span class="kw-pos">16</span></td>
+          <td class="kw-trend kw-trend-flat">→</td>
+          <td class="kw-target">Top 10</td>
+        </tr>
+        <tr>
+          <td>it payroll financing</td>
+          <td class="kw-vol">320</td>
+          <td><span class="kw-pos">17</span></td>
+          <td class="kw-trend kw-trend-up">↑ 5</td>
+          <td class="kw-target">Top 10</td>
+        </tr>
+        <tr>
+          <td>factoring vs line of credit</td>
+          <td class="kw-vol">1,300</td>
+          <td><span class="kw-pos">21</span></td>
+          <td class="kw-trend kw-trend-up">↑ 7</td>
+          <td class="kw-target">Top 15</td>
+        </tr>
+        <tr>
+          <td>factoring freight invoices</td>
+          <td class="kw-vol">880</td>
+          <td><span class="kw-pos">42</span></td>
+          <td class="kw-trend kw-trend-down">↓ 4</td>
+          <td class="kw-target">Top 20</td>
+        </tr>
       </tbody>
     </table>
   </section>
 
   <!-- TRADITIONAL SEO -->
   <section id="traditional">
-    <div class="section-tag">Current stats</div>
+    <div class="section-tag">Performance</div>
     <h2>Traditional SEO</h2>
     <p class="section-sub">Time range: Last 90 days · Source: Google Search Console & GA4</p>
 
@@ -562,6 +745,12 @@
     <h2>On-Page SEO Optimizations</h2>
     <p class="section-sub">September 2025</p>
 
+    <div class="impl-progress">
+      <div class="impl-progress-bar">
+        <div class="impl-progress-fill" style="width:100%"></div>
+      </div>
+      <div class="impl-progress-label">9 / 9 complete</div>
+    </div>
     <table class="impl-table">
       <tbody>
         <tr>
@@ -727,6 +916,68 @@
   </div>
   <div class="footer-tia">Marketing & Reporting Powered by <a href="https://www.theinfluenceagency.com" target="_blank">The Influence Agency</a> &nbsp;·&nbsp; March 2026</div>
 </footer>
+
+<script>
+  // IntersectionObserver for active nav links
+  const sections = document.querySelectorAll('main section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a, .mobile-nav a');
+  const navObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id);
+        });
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+  sections.forEach(s => navObserver.observe(s));
+
+  // Hamburger toggle
+  const hamburger = document.getElementById('hamburger');
+  const mobileNav = document.getElementById('mobile-nav');
+  hamburger.addEventListener('click', () => {
+    const open = mobileNav.classList.toggle('open');
+    hamburger.setAttribute('aria-expanded', open);
+    mobileNav.setAttribute('aria-hidden', !open);
+  });
+  mobileNav.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      mobileNav.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+      mobileNav.setAttribute('aria-hidden', 'true');
+    });
+  });
+
+  // Change "Missing" dots to red
+  document.querySelectorAll('.audit-status').forEach(status => {
+    if (status.textContent.trim().includes('Missing')) {
+      const dot = status.querySelector('.dot');
+      if (dot) { dot.classList.remove('dot-yellow'); dot.classList.add('dot-red'); }
+    }
+  });
+
+  // Audit section summary counts
+  document.querySelectorAll('.audit-section').forEach(section => {
+    const title = section.querySelector('.audit-section-title');
+    let green = 0, yellow = 0, red = 0;
+    section.querySelectorAll('.audit-row').forEach(row => {
+      if (row.querySelector('.dot-red')) red++;
+      else if (row.querySelector('.dot-green')) green++;
+      else if (row.querySelector('.dot-yellow')) yellow++;
+    });
+    const summary = document.createElement('div');
+    summary.className = 'audit-summary';
+    const parts = [];
+    if (green)  parts.push(`<span><span class="dot dot-green"></span>${green} optimized</span>`);
+    if (yellow) parts.push(`<span><span class="dot dot-yellow"></span>${yellow} ongoing</span>`);
+    if (red)    parts.push(`<span><span class="dot dot-red"></span>${red} missing</span>`);
+    summary.innerHTML = parts.join('');
+    title.after(summary);
+  });
+
+  // Print button
+  document.getElementById('btn-print').addEventListener('click', () => window.print());
+</script>
 
 </body>
 </html>
